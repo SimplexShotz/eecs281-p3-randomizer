@@ -211,11 +211,11 @@
           let commandsFile = document.getElementById("commands-output").innerText;
           navigator.clipboard.writeText(commandsFile);
 
-          clearInterval(copyIntervalRegistration);
+          clearInterval(copyIntervalCommands);
           
           document.getElementById("commands-copy").getElementsByTagName("img")[0].src = "copy-done.svg";
 
-          copyIntervalRegistration = setInterval(function() {
+          copyIntervalCommands = setInterval(function() {
           
             document.getElementById("commands-copy").getElementsByTagName("img")[0].src = "copy.svg";
 
