@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>EECS 281 - Project 3 - Test Case Generator (2023)</title>
+
+    <!-- Fonts: -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;900&display=swap" rel="stylesheet">
+
+    <style>
+
+      * {
+        font-family: "Outfit", sans-serif;
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        min-height: 100vh;
+      }
+
+      .main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20vh;
+        min-height: 60vh;
+        flex-direction: column;
+      }
+
+      .header {
+        font-size: 24pt;
+        font-weight: 900;
+        margin-bottom: 25px;
+      }
+
+      .output {
+        display: flex;
+        width: 100%;
+        height: 40vh;
+      }
+
+      .output {
+        display: flex;
+        width: 100%;
+      }
+
+      .output-container {
+        display: flex;
+        margin: 10px;
+        padding: 25px;
+        border: 1px solid rgb(200, 200, 200);
+        border-radius: 10px;
+        align-items: center;
+        flex-direction: column;
+        flex: 1 0 0;
+        overflow: auto;
+      }
+
+      .output-header {
+        display: flex;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .output-header-copy {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        align-items: center;
+        transition: 0.25s background-color;
+        border-radius: 10px;
+        user-select: none;
+      }
+
+      .output-header-copy:hover {
+        cursor: pointer;
+        background-color: rgb(200, 200, 200, 0.5);
+      }
+
+      .output-header-copy:active {
+        cursor: pointer;
+        background-color: rgb(200, 200, 200, 0.7);
+      }
+
+      .output-header-text {
+        margin: 10px;
+        margin-right: 50px;
+        color: rgb(200, 200, 200);
+        border-bottom: 1px solid rgb(200, 200, 200);
+      }
+
+      .output-header-spacer {
+        flex-grow: 1;
+      }
+
+      .output-header-spacer-fixed {
+        width: 40px;
+        height: 40px;
+      }
+
+      .output-editable {
+        width: 100%;
+        height: 100%;
+      }
+
+      .output-editable:focus {
+        outline: none;
+      }
+
+      .generate {
+        background-color: rgb(125, 186, 120);
+        color: rgb(255, 255, 255);
+        font-size: 12pt;
+        padding: 10px 25px;
+        border: none;
+        border-radius: 10px;
+        margin-top: 25px;
+        transition: 0.25s background-color;
+      }
+
+      .generate:hover {
+        cursor: pointer;
+        background-color: rgb(115, 176, 110);
+      }
+
+      .generate:active {
+        cursor: pointer;
+        background-color: rgb(95, 156, 90);
+      }
+
+      img {
+        height: 30px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div class="main">
+
+      <div class="header">Project 3 - Random Test Case Generator</div>
+      <div class="output">
+        <div class="output-container">
+          <div class="output-header">
+            <div id="registration-copy" class="output-header-copy"><img src="copy.svg"></div>
+            <div class="output-header-spacer"></div>
+            <div class="output-header-text">test-n-reg.txt</div>
+            <div class="output-header-spacer"></div>
+            <div class="output-header-spacer-fixed"></div>
+          </div>
+          <div id="registration-output" class="output-editable" contenteditable="true"></div>
+        </div>
+        <div class="output-container">
+          <div class="output-header">
+            <div id="commands-copy" class="output-header-copy"><img src="copy.svg"></div>
+            <div class="output-header-spacer"></div>
+            <div class="output-header-text">test-n-commands.txt</div>
+            <div class="output-header-spacer"></div>
+            <div class="output-header-spacer-fixed"></div>
+          </div>
+          <div id="commands-output" class="output-editable" contenteditable="true"></div>
+        </div>
+      </div>
+      <button id="generate" class="generate">Generate!</button>
+
+    </div>
+    
+    <script src="generator.js"></script>
+    <script>
+
+      let copyIntervalRegistration, copyIntervalCommands;
+
+      window.addEventListener("load", function() {
+
+        document.getElementById("generate").addEventListener("click", function() {
+
+          let testCase = generateTestCase();
+
+          document.getElementById("registration-output").innerText = testCase.registrationFile;
+          document.getElementById("commands-output").innerText = `${testCase.commandsFile}\n$$$\n${testCase.queriesFile}`;
+
+        });
+
+        document.getElementById("registration-copy").addEventListener("click", function() {
+
+          let registrationFile = document.getElementById("registration-output").innerText;
+          navigator.clipboard.writeText(registrationFile);
+
+          clearInterval(copyIntervalRegistration);
+          
+          document.getElementById("registration-copy").getElementsByTagName("img")[0].src = "copy-done.svg";
+
+          copyIntervalRegistration = setInterval(function() {
+          
+            document.getElementById("registration-copy").getElementsByTagName("img")[0].src = "copy.svg";
+
+          }, 1000);
+
+        });
+
+        document.getElementById("commands-copy").addEventListener("click", function() {
+          
+          let commandsFile = document.getElementById("commands-output").innerText;
+          navigator.clipboard.writeText(commandsFile);
+
+          clearInterval(copyIntervalRegistration);
+          
+          document.getElementById("commands-copy").getElementsByTagName("img")[0].src = "copy-done.svg";
+
+          copyIntervalRegistration = setInterval(function() {
+          
+            document.getElementById("commands-copy").getElementsByTagName("img")[0].src = "copy.svg";
+
+          }, 1000);
+
+        });
+
+      });
+
+    </script>
+
+  </body>
+</html>
