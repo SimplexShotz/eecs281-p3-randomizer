@@ -154,8 +154,8 @@ function generatePlaceCommand(users, execTimes, lastTime) {
   
   userB = users[rand(users.length)];
 
-  lastTime = generateTime(lastTime);
-  let exec = generateTime(lastTime);
+  lastTime[0] = generateTime(lastTime[0]);
+  let exec = generateTime(lastTime[0]);
 
   execTimes.push(exec + 5000000);
 
@@ -164,7 +164,7 @@ function generatePlaceCommand(users, execTimes, lastTime) {
   userA.balance -= amount;
   userB.balance += amount;
 
-  return `place ${toTimestamp(lastTime + 5000000)} ${IP} ${userA.name} ${userB.name} ${amount} ${toTimestamp(exec + 5000000)} ${Math.random() < 0.5 ? "o" : "s"}`;
+  return `place ${toTimestamp(lastTime[0] + 5000000)} ${IP} ${userA.name} ${userB.name} ${amount} ${toTimestamp(exec + 5000000)} ${Math.random() < 0.5 ? "o" : "s"}`;
   
 }
 
@@ -263,7 +263,7 @@ function generateTestCase() {
   }
 
   let execTimes = [];
-  let lastTime = 0;
+  let lastTime = [0];
 
   let registrationFile = generateRegistrationFile(users);
   let commandsFile = generateCommandsFile(users, execTimes, lastTime);
